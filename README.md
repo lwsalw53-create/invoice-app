@@ -53,7 +53,7 @@ invoice-app/
    ```bash
    npm run dev
    ```
-6. Open `http://localhost:3000`
+6. Open the dashboard link: `http://localhost:3000/dashboard`
 
 ## API Endpoints
 ### Auth
