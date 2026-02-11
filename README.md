@@ -1,61 +1,89 @@
-# Invoice Management System (Node.js + Express + MySQL)
+# Invoice Management System (React + Express + MySQL)
 
-A full stack invoice management system with JWT authentication, CRUD modules for customers/products/invoices, invoice item support, tax calculation, and PDF generation.
+This project is now organized as a two-app setup:
+
+- `client/`: modern React dashboard frontend (Vite)
+- `server/`: Express + MySQL backend API
 
 ## Features
-- User registration and login with JWT
-- Customers CRUD
-- Products CRUD
-- Invoices CRUD
-- Invoice items per invoice
-- Automatic tax and total calculations
-- PDF invoice download endpoint
-- Simple frontend dashboard in `public/`
-- MySQL schema included in `schema.sql`
+
+- JWT login flow
+- Responsive dashboard layout with sidebar + top navbar
+- Pages: Login, Customers, Products, Invoices
+- CRUD tables with create/edit modals
+- Invoice item editor in modal
+- API integration with existing Express endpoints
 
 ## Project Structure
-```
+
+```txt
 invoice-app/
-├── public/
-│   ├── css/
-│   ├── js/
-│   └── index.html
-├── src/
-│   ├── config/
-│   ├── controllers/
-│   ├── middleware/
-│   ├── models/
-│   ├── routes/
-│   ├── services/
-│   ├── utils/
-│   ├── app.js
-│   └── server.js
-├── schema.sql
-├── .env.example
+├── client/
+│   ├── src/
+│   │   ├── components/
+│   │   ├── pages/
+│   │   ├── api.js
+│   │   ├── App.jsx
+│   │   └── styles.css
+│   ├── package.json
+│   └── vite.config.js
+├── server/
+│   ├── src/
+│   ├── schema.sql
+│   ├── .env.example
+│   └── package.json
 └── package.json
 ```
 
 ## Setup
-1. Install dependencies:
+
+1. Install root tooling and both app dependencies:
+
    ```bash
    npm install
+   npm run install:all
    ```
-2. Create environment file:
-   ```bash
-   cp .env.example .env
-   ```
-3. Update `.env` with your MySQL credentials and JWT secret.
-4. Run SQL schema in MySQL:
-   ```bash
-   mysql -u root -p < schema.sql
-   ```
-5. Start app:
-   ```bash
-   npm run dev
-   ```
-6. Open `http://localhost:3000`
 
-## API Endpoints
+2. Create backend environment file:
+
+   ```bash
+   cp server/.env.example server/.env
+   ```
+
+3. Configure `server/.env` with your MySQL credentials and JWT values.
+
+4. Create the database/tables:
+
+   ```bash
+   mysql -u root -p < server/schema.sql
+   ```
+
+## Running the apps
+
+### Run backend only
+
+```bash
+npm run dev:server
+```
+
+Backend API runs on `http://localhost:3000`.
+
+### Run frontend only
+
+```bash
+npm run dev:client
+```
+
+Frontend runs on `http://localhost:5173` and proxies `/api` calls to backend.
+
+### Run both together
+
+```bash
+npm run dev
+```
+
+## API Endpoints (server)
+
 ### Auth
 - `POST /api/auth/register`
 - `POST /api/auth/login`
@@ -81,23 +109,3 @@ invoice-app/
 - `PUT /api/invoices/:id`
 - `DELETE /api/invoices/:id`
 - `GET /api/invoices/:id/pdf`
-
-## Example Invoice Payload
-```json
-{
-  "customer_id": 1,
-  "invoice_number": "INV-2026-001",
-  "issue_date": "2026-01-01",
-  "due_date": "2026-01-15",
-  "notes": "Thanks for your business",
-  "items": [
-    {
-      "product_id": 1,
-      "description": "Website Design",
-      "quantity": 2,
-      "unit_price": 500,
-      "tax_rate": 8
-    }
-  ]
-}
-```
