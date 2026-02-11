@@ -1,24 +1,17 @@
 {
   "name": "invoice-app",
+  "private": true,
   "version": "1.0.0",
-  "description": "Full stack invoice management system with Node.js, Express and MySQL",
-  "main": "src/server.js",
+  "description": "Invoice app monorepo",
   "scripts": {
-    "start": "node src/server.js",
-    "dev": "nodemon src/server.js",
-    "lint": "echo 'No linter configured'",
-    "check": "node --check src/server.js"
-  },
-  "dependencies": {
-    "bcryptjs": "^2.4.3",
-    "cors": "^2.8.5",
-    "dotenv": "^16.4.5",
-    "express": "^4.19.2",
-    "jsonwebtoken": "^9.0.2",
-    "mysql2": "^3.11.3",
-    "pdfkit": "^0.15.0"
+    "install:all": "npm install --prefix server && npm install --prefix client",
+    "dev:server": "npm run dev --prefix server",
+    "dev:client": "npm run dev --prefix client",
+    "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
+    "build": "npm run build --prefix client",
+    "start": "npm run start --prefix server"
   },
   "devDependencies": {
-    "nodemon": "^3.1.4"
+    "concurrently": "^9.0.1"
   }
 }
