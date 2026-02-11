@@ -1,6 +1,6 @@
-# Invoice Management System (Node.js + Express + MySQL)
+# Invoice Management System (Node.js + Express + MySQL + React)
 
-A full stack invoice management system with JWT authentication, CRUD modules for customers/products/invoices, invoice item support, tax calculation, and PDF generation.
+A full stack invoice management system with JWT authentication, CRUD modules for customers/products/invoices, invoice item support, tax calculation, PDF generation, and a modern React dashboard UI.
 
 ## Features
 - User registration and login with JWT
@@ -10,7 +10,7 @@ A full stack invoice management system with JWT authentication, CRUD modules for
 - Invoice items per invoice
 - Automatic tax and total calculations
 - PDF invoice download endpoint
-- Simple frontend dashboard in `public/`
+- Modern React dashboard in `public/`
 - MySQL schema included in `schema.sql`
 
 ## Project Structure
