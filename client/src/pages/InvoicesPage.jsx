@@ -19,6 +19,7 @@ export default function InvoicesPage() {
   const [editingId, setEditingId] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [error, setError] = useState('');
+  const [loadingInvoiceId, setLoadingInvoiceId] = useState(null);
 
   const customerMap = useMemo(() => Object.fromEntries(customers.map((c) => [c.id, c.name])), [customers]);
 
@@ -42,14 +43,24 @@ export default function InvoicesPage() {
     setShowModal(true);
   }
 
-  function openEdit(invoice) {
-    setEditingId(invoice.id);
-    setForm({
-      ...invoice,
-      customer_id: invoice.customer_id,
-      items: invoice.items?.length ? invoice.items : initialForm.items
-    });
-    setShowModal(true);
+  async function openEdit(invoice) {
+    try {
+      setError('');
+      setLoadingInvoiceId(invoice.id);
+      const fullInvoice = await api.getInvoice(invoice.id);
+
+      setEditingId(fullInvoice.id);
+      setForm({
+        ...fullInvoice,
+        customer_id: fullInvoice.customer_id,
+        items: fullInvoice.items?.length ? fullInvoice.items : initialForm.items
+      });
+      setShowModal(true);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoadingInvoiceId(null);
+    }
   }
 
   function setItem(index, key, value) {
@@ -118,7 +129,14 @@ export default function InvoicesPage() {
             <td>${Number(invoice.total_amount || 0).toFixed(2)}</td>
             <td>
               <div className="row-actions">
-                <button type="button" className="ghost-btn" onClick={() => openEdit(invoice)}>Edit</button>
+                <button
+                  type="button"
+                  className="ghost-btn"
+                  onClick={() => openEdit(invoice)}
+                  disabled={loadingInvoiceId === invoice.id}
+                >
+                  {loadingInvoiceId === invoice.id ? 'Loading...' : 'Edit'}
+                </button>
                 <button type="button" className="danger-btn" onClick={() => handleDelete(invoice.id)}>Delete</button>
               </div>
             </td>

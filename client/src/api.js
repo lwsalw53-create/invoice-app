@@ -43,6 +43,7 @@ export const api = {
   updateProduct: (id, payload) => request(`/api/products/${id}`, { method: 'PUT', body: JSON.stringify(payload) }),
   deleteProduct: (id) => request(`/api/products/${id}`, { method: 'DELETE' }),
   getInvoices: () => request('/api/invoices'),
+  getInvoice: (id) => request(`/api/invoices/${id}`),
   createInvoice: (payload) => request('/api/invoices', { method: 'POST', body: JSON.stringify(payload) }),
   updateInvoice: (id, payload) => request(`/api/invoices/${id}`, { method: 'PUT', body: JSON.stringify(payload) }),
   deleteInvoice: (id) => request(`/api/invoices/${id}`, { method: 'DELETE' })
