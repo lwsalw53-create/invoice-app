@@ -1,0 +1,104 @@
+openapi: 3.1.0
+info:
+  title: Manasik Pro API
+  version: 0.1.0
+  description: API مبدئي لمنصة مناسك برو
+servers:
+  - url: https://api.manasikpro.com/v1
+security:
+  - bearerAuth: []
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Customer:
+      type: object
+      required: [id, full_name, phone, passport_number, arrival_date, departure_date]
+      properties:
+        id: { type: string, format: uuid }
+        full_name: { type: string }
+        nationality: { type: string }
+        phone: { type: string }
+        passport_number: { type: string }
+        companions_count: { type: integer }
+        arrival_date: { type: string, format: date }
+        departure_date: { type: string, format: date }
+        booking_status: { type: string }
+        payment_status: { type: string }
+paths:
+  /auth/login:
+    post:
+      summary: تسجيل الدخول
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email: { type: string, format: email }
+                password: { type: string }
+      responses:
+        '200':
+          description: JWT token
+  /dashboard/summary:
+    get:
+      summary: مؤشرات لوحة التحكم
+      responses:
+        '200':
+          description: KPI summary
+  /customers:
+    get:
+      summary: قائمة العملاء
+      responses:
+        '200':
+          description: Customers list
+    post:
+      summary: إضافة عميل
+      responses:
+        '201':
+          description: Customer created
+  /customers/{id}:
+    get:
+      summary: تفاصيل عميل
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        '200':
+          description: Customer details
+    patch:
+      summary: تعديل عميل
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        '200':
+          description: Customer updated
+  /packages:
+    get:
+      summary: قائمة الباقات
+      responses:
+        '200':
+          description: Packages list
+  /payments:
+    post:
+      summary: تسجيل دفعة
+      responses:
+        '201':
+          description: Payment recorded
+  /reports/monthly:
+    get:
+      summary: تقرير شهري
+      responses:
+        '200':
+          description: Monthly analytics
